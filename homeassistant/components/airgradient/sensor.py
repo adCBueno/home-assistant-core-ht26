@@ -53,6 +53,22 @@ class AirGradientConfigSensorEntityDescription(SensorEntityDescription):
     config_key: str
     value_fn: Callable[[Config], StateType]
 
+def _particle_count_sensor(
+    *,
+    key: str,
+    translation_key: str,
+    value_fn: Callable[[Measures], StateType],
+    enabled_default: bool = False,
+) -> AirGradientMeasurementSensorEntityDescription:
+    """Create a particle count sensor description."""
+    return AirGradientMeasurementSensorEntityDescription(
+        key=key,
+        translation_key=translation_key,
+        native_unit_of_measurement="particles/dL",
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=enabled_default,
+        value_fn=value_fn,
+    )
 
 MEASUREMENT_SENSOR_TYPES: tuple[AirGradientMeasurementSensorEntityDescription, ...] = (
     AirGradientMeasurementSensorEntityDescription(
@@ -118,51 +134,35 @@ MEASUREMENT_SENSOR_TYPES: tuple[AirGradientMeasurementSensorEntityDescription, .
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda status: status.rco2,
     ),
-    AirGradientMeasurementSensorEntityDescription(
+    _particle_count_sensor(
         key="pm003",
         translation_key="pm003_count",
-        native_unit_of_measurement="particles/dL",
-        state_class=SensorStateClass.MEASUREMENT,
+        enabled_default=True,
         value_fn=lambda status: status.pm003_count,
     ),
-    AirGradientMeasurementSensorEntityDescription(
+    _particle_count_sensor(
         key="pm005_count",
         translation_key="pm005_count",
-        native_unit_of_measurement="particles/dL",
-        state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
         value_fn=lambda status: status.pm005_count,
     ),
-    AirGradientMeasurementSensorEntityDescription(
+    _particle_count_sensor(
         key="pm01_count",
         translation_key="pm01_count",
-        native_unit_of_measurement="particles/dL",
-        state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
         value_fn=lambda status: status.pm01_count,
     ),
-    AirGradientMeasurementSensorEntityDescription(
+    _particle_count_sensor(
         key="pm02_count",
         translation_key="pm02_count",
-        native_unit_of_measurement="particles/dL",
-        state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
         value_fn=lambda status: status.pm02_count,
     ),
-    AirGradientMeasurementSensorEntityDescription(
+    _particle_count_sensor(
         key="pm50_count",
         translation_key="pm50_count",
-        native_unit_of_measurement="particles/dL",
-        state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
         value_fn=lambda status: status.pm50_count,
     ),
-    AirGradientMeasurementSensorEntityDescription(
+    _particle_count_sensor(
         key="pm10_count",
         translation_key="pm10_count",
-        native_unit_of_measurement="particles/dL",
-        state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
         value_fn=lambda status: status.pm10_count,
     ),
     AirGradientMeasurementSensorEntityDescription(
